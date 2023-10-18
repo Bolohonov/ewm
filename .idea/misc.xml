@@ -4,6 +4,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/ewm-api" />
     <file type="web" url="file://$PROJECT_DIR$/ewm-server" />
+    <file type="web" url="file://$PROJECT_DIR$/ewm-statistics" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
