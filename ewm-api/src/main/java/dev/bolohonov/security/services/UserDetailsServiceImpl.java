@@ -1,9 +1,11 @@
 package dev.bolohonov.security.services;
 
+import dev.bolohonov.errors.ApiError;
 import dev.bolohonov.model.User;
 import dev.bolohonov.repository.user.UserRepository;
 import dev.bolohonov.security.UserDetailsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email).get();
+    public UserDetails loadUserByUsername(String name) {
+        User user = userRepository.findByName(name).orElseThrow(
+                () -> new ApiError(HttpStatus.NOT_FOUND, "Пользователь не найден",
+                        String.format("При выполнении %s не найден %s c именем %s",
+                                "аутентификации", "пользователь", name))
+        );
 
         return detailsHelper.buildDetails(user);
     }

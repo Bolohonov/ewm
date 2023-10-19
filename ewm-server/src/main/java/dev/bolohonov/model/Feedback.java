@@ -11,7 +11,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "feedbacks", schema = "public")
+@Table(name = "feedbacks")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

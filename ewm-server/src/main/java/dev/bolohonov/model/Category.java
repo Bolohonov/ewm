@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "categories", schema = "public")
+@Table(name = "categories")
 @Data
 public class Category {
     /**

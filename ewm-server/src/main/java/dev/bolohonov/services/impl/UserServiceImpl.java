@@ -1,6 +1,7 @@
 package dev.bolohonov.services.impl;
 
 import dev.bolohonov.errors.ApiError;
+import dev.bolohonov.errors.user.UserNameDuplicateException;
 import dev.bolohonov.mappers.UserMapper;
 import dev.bolohonov.model.User;
 import dev.bolohonov.dto.user.UserDto;
@@ -8,6 +9,7 @@ import dev.bolohonov.repository.user.UserRepository;
 import dev.bolohonov.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -50,10 +52,13 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDto(users);
     }
 
-    @Transactional
     @Override
     public UserDto saveUser(User user) {
-        return UserMapper.toUserDto(userRepository.save(user));
+        if (!userRepository.findByName(user.getName()).isPresent()) {
+            return UserMapper.toUserDto(user);
+        } else {
+            throw new UserNameDuplicateException("Ошибка при создании пользователя", user.getName());
+        }
     }
 
     @Transactional(readOnly = true)
@@ -68,11 +73,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<UserDto> getUserByEmail(String email) {
-        return of(UserMapper.toUserDto(userRepository.findByEmail(email).orElseThrow(
+    public Optional<UserDto> getUserByName(String name) {
+        return of(UserMapper.toUserDto(userRepository.findByName(name).orElseThrow(
                 () -> new ApiError(HttpStatus.NOT_FOUND, "Пользователь не найден",
                         String.format("При выполнении %s не найден %s c id %s",
-                                "getUserEmail", ER_OBJ, email))
+                                "getUserName", ER_OBJ, name))
         )));
     };
 

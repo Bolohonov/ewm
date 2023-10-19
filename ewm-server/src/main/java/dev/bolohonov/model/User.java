@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * класс с описанием пользователя - User //
  */
 @Entity
-@Table(name = "users", schema = "public")
+@Table(name = "users")
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,13 +28,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * имя или логин пользователя
+     * имя или логин пользователя, должно быть уникальным
      */
     private String name;
+    /**
+     * имя пользователя
+     */
+    private String firstname;
+    /**
+     * фамилия пользователя
+     */
+    private String lastname;
     /**
      * адрес электронной почты
      */
     private String email;
-
+    /**
+     * хэш-код пароля
+     */
     private String password_hash;
 }

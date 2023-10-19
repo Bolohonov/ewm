@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
-@Table(name = "compilations", schema = "public")
+@Table(name = "compilations")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

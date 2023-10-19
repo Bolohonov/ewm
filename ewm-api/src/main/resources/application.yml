@@ -8,10 +8,10 @@ server:
 #db
 spring:
   datasource:
-    driverClassName: org.postgresql.Driver
-    password: password
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
+    driverClassName: com.mysql.jdbc.Driver
+    password: Ewmadminpassword2024%
+    url: jdbc:mysql://localhost:3306/ewm
+    username: ewm
   jpa:
     generate-ddl: false
   flyway:
