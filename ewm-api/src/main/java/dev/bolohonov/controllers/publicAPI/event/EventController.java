@@ -1,9 +1,9 @@
 package dev.bolohonov.controllers.publicAPI.event;
 
-import dev.bolohonov.dto.event.EventFullDto;
-import dev.bolohonov.dto.event.EventShortDto;
-import dev.bolohonov.services.client.StatisticsClient;
-import dev.bolohonov.services.EventServicePublic;
+import dev.bolohonov.server.dto.event.EventFullDto;
+import dev.bolohonov.server.dto.event.EventShortDto;
+import dev.bolohonov.server.services.client.StatisticsClient;
+import dev.bolohonov.server.services.EventServicePublic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

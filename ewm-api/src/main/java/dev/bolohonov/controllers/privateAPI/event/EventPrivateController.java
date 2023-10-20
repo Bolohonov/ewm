@@ -1,13 +1,13 @@
 package dev.bolohonov.controllers.privateAPI.event;
 
-import dev.bolohonov.dto.event.EventAddDto;
-import dev.bolohonov.dto.event.EventFullDto;
-import dev.bolohonov.dto.event.EventShortDto;
-import dev.bolohonov.dto.event.EventUpdateDto;
-import dev.bolohonov.dto.RequestDto;
-import dev.bolohonov.dto.user.UserWithRatingDto;
-import dev.bolohonov.services.EventServicePrivate;
-import dev.bolohonov.services.RequestService;
+import dev.bolohonov.server.dto.event.EventAddDto;
+import dev.bolohonov.server.dto.event.EventFullDto;
+import dev.bolohonov.server.dto.event.EventShortDto;
+import dev.bolohonov.server.dto.event.EventUpdateDto;
+import dev.bolohonov.server.dto.RequestDto;
+import dev.bolohonov.server.dto.user.UserWithRatingDto;
+import dev.bolohonov.server.services.EventServicePrivate;
+import dev.bolohonov.server.services.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

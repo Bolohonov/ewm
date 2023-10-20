@@ -1,8 +1,8 @@
 package dev.bolohonov;
 
-import dev.bolohonov.model.User;
-import dev.bolohonov.dto.user.UserDto;
-import dev.bolohonov.services.UserService;
+import dev.bolohonov.server.model.User;
+import dev.bolohonov.server.dto.user.UserDto;
+import dev.bolohonov.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -45,10 +45,11 @@ public class Initializer implements CommandLineRunner {
     private void createDefaultUser() {
         User user = User.builder()
                 .name("admin")
+                .firstname("ivan")
+                .lastname("petrov")
                 .email("admin@ewm.ru")
-                .password_hash(passwordEncoder.encode("mrrHHaUNATsB="))
+                .password_hash(passwordEncoder.encode("cGFzc3dvcmQ="))
                 .build();
-
         userService.saveUser(user);
     }
 }

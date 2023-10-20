@@ -1,7 +1,7 @@
 package dev.bolohonov.controllers.privateAPI.request;
 
-import dev.bolohonov.dto.RequestDto;
-import dev.bolohonov.services.RequestService;
+import dev.bolohonov.server.dto.RequestDto;
+import dev.bolohonov.server.services.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

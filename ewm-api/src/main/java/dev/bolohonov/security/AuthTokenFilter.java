@@ -2,7 +2,7 @@ package dev.bolohonov.security;
 
 import dev.bolohonov.security.jwt.JwtUtils;
 import dev.bolohonov.security.services.UserDetailsServiceImpl;
-import dev.bolohonov.services.UserService;
+import dev.bolohonov.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

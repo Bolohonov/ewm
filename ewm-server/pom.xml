@@ -6,10 +6,10 @@
     <parent>
         <groupId>dev.bolohonov</groupId>
         <artifactId>explore-with-me</artifactId>
-        <version>${revision}</version>
+        <version>0.0.1</version>
     </parent>
     <artifactId>ewm-server</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>ewm-server Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
@@ -74,5 +74,15 @@
     </dependencies>
     <build>
         <finalName>ewm-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

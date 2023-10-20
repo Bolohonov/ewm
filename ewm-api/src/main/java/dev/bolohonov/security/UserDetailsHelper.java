@@ -1,7 +1,7 @@
 package dev.bolohonov.security;
 
-import dev.bolohonov.model.User;
-import dev.bolohonov.services.RoleService;
+import dev.bolohonov.server.model.User;
+import dev.bolohonov.server.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

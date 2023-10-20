@@ -3,9 +3,9 @@ server:
 spring:
     datasource:
         driverClassName:
-        password: ${DB_PASSWORD}
-        url: ${STAT_DB_URL}
-        username: ${DB_USER}
+        password: ewm
+        url: jdbc:postgresql://localhost:5433/ewm-statistics
+        username: ewm
     jpa:
         hibernate:
             ddl-auto: none

@@ -1,15 +1,16 @@
 package dev.bolohonov.controllers;
 
-import dev.bolohonov.model.Token;
-import dev.bolohonov.dto.LoginDto;
+import dev.bolohonov.server.dto.LoginSuccessDto;
+import dev.bolohonov.server.errors.security.AuthException;
+import dev.bolohonov.server.model.Token;
+import dev.bolohonov.server.dto.LoginDto;
 import dev.bolohonov.security.UserDetailsImpl;
 import dev.bolohonov.security.jwt.JwtUtils;
-import dev.bolohonov.services.RoleService;
-import dev.bolohonov.services.TokenService;
-import dev.bolohonov.services.UserService;
+import dev.bolohonov.server.services.RoleService;
+import dev.bolohonov.server.services.TokenService;
+import dev.bolohonov.server.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/${ewm.api_version}/auth")
+@RequestMapping("/api/${ewm.api.version}/auth")
 @CrossOrigin(origins = {"${ewm.origin.localhost}"},
         allowedHeaders = {"Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept", "Cookie"},
         allowCredentials = "true",
@@ -75,23 +76,19 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (BadCredentialsException e) {
             log.warn("Bad credentials for "+request.getUsername());
-            ErrorDto errorDto = ErrorDto.builder()
-                    .code(HttpStatus.FORBIDDEN.value())
-                    .reason("Bad credentials")
-                    .build();
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
+            throw new AuthException(request.getUsername());
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateToken(authentication);
 
         HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("user", userService.fin(request.getUsername()));
+        session.setAttribute("user", userService.getUserByName(request.getUsername()).get());
 
         session.setAttribute("token", tokenService.saveToken(Token.builder()
                 .token_validity(true)
                 .token_value(jwt)
-                .user(userService.findByUsername(request.getUsername()))
+                .user(userService.getUserByName(request.getUsername()).get())
                 .build()));
 
         UserDetailsImpl details = (UserDetailsImpl) authentication.getPrincipal();

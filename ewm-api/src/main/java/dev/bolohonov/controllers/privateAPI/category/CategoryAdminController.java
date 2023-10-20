@@ -1,8 +1,8 @@
 package dev.bolohonov.controllers.privateAPI.category;
 
-import dev.bolohonov.model.Category;
-import dev.bolohonov.dto.CategoryDto;
-import dev.bolohonov.services.CategoryService;
+import dev.bolohonov.server.model.Category;
+import dev.bolohonov.server.dto.CategoryDto;
+import dev.bolohonov.server.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

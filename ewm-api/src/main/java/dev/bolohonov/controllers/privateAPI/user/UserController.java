@@ -1,8 +1,8 @@
 package dev.bolohonov.controllers.privateAPI.user;
 
-import dev.bolohonov.model.User;
-import dev.bolohonov.dto.user.UserDto;
-import dev.bolohonov.services.UserService;
+import dev.bolohonov.server.model.User;
+import dev.bolohonov.server.dto.user.UserDto;
+import dev.bolohonov.server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;

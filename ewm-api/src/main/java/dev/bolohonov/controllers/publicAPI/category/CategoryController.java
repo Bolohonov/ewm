@@ -1,7 +1,7 @@
 package dev.bolohonov.controllers.publicAPI.category;
 
-import dev.bolohonov.dto.CategoryDto;
-import dev.bolohonov.services.CategoryService;
+import dev.bolohonov.server.dto.CategoryDto;
+import dev.bolohonov.server.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

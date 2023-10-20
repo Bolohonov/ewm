@@ -5,7 +5,7 @@
     <parent>
         <groupId>dev.bolohonov</groupId>
         <artifactId>explore-with-me</artifactId>
-        <version>${revision}</version>
+        <version>0.0.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -13,6 +13,12 @@
     <artifactId>ewm-api</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>dev.bolohonov</groupId>
+            <artifactId>ewm-server</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -33,7 +39,11 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-jdbc</artifactId>
-            <version>3.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230227</version>
         </dependency>
 
         <dependency>
@@ -69,12 +79,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>dev.bolohonov</groupId>
-            <artifactId>ewm-server</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

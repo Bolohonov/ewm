@@ -1,8 +1,8 @@
 package dev.bolohonov.controllers.privateAPI.compilation;
 
-import dev.bolohonov.dto.compilation.CompilationAddDto;
-import dev.bolohonov.dto.compilation.CompilationDto;
-import dev.bolohonov.services.CompilationService;
+import dev.bolohonov.server.dto.compilation.CompilationAddDto;
+import dev.bolohonov.server.dto.compilation.CompilationDto;
+import dev.bolohonov.server.services.CompilationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;

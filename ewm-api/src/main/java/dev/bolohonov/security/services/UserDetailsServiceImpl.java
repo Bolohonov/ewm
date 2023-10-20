@@ -1,8 +1,8 @@
 package dev.bolohonov.security.services;
 
-import dev.bolohonov.errors.ApiError;
-import dev.bolohonov.model.User;
-import dev.bolohonov.repository.user.UserRepository;
+import dev.bolohonov.server.errors.ApiError;
+import dev.bolohonov.server.model.User;
+import dev.bolohonov.server.repository.user.UserRepository;
 import dev.bolohonov.security.UserDetailsHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
