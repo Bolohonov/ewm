@@ -1,6 +1,9 @@
 package dev.bolohonov.server.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +15,9 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "categories")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Category {
     /**
      * уникальный идентификатор пользователя

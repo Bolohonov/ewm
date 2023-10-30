@@ -2,16 +2,13 @@ package dev.bolohonov.controllers.publicAPI.event;
 
 import dev.bolohonov.server.dto.event.EventFullDto;
 import dev.bolohonov.server.dto.event.EventShortDto;
+import dev.bolohonov.server.model.Event;
+import dev.bolohonov.server.repository.event.EventRepository;
 import dev.bolohonov.server.services.client.StatisticsClient;
 import dev.bolohonov.server.services.EventServicePublic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
@@ -25,12 +22,18 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/events")
+@RequestMapping("/api/${ewm.api.version}/events")
+@CrossOrigin(origins = {"${ewm.origin.localhost}"},
+        allowedHeaders = {"Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept", "Cookie"},
+        allowCredentials = "true",
+        methods = {RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.GET},
+        maxAge = 3600)
 public class EventController {
     private final EventServicePublic eventService;
-    private final StatisticsClient statisticsClient;
+    private final EventRepository eventRepository;
+//    private final StatisticsClient statisticsClient;
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(OK)
     public Collection<EventShortDto> findEvents(
             @RequestParam(name = "text", required = false) String text,
@@ -43,7 +46,8 @@ public class EventController {
             @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
             HttpServletRequest request) {
-        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
+//        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
+        log.debug("Запрос на получение всхе событий в паблик контроллер");
         return eventService.getEvents(text, categories, paid, rangeStart, rangeEnd,
                 onlyAvailable, sort, from, size);
     }
@@ -52,7 +56,15 @@ public class EventController {
     @ResponseStatus(OK)
     public Optional<EventFullDto> findEventById(@PathVariable Long eventId,
                                                 HttpServletRequest request) {
-        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
+//        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
         return eventService.getPublishedEventById(eventId);
+    }
+
+    @GetMapping("/all2")
+    @ResponseStatus(OK)
+    public Collection<Event> findEvents() {
+//        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
+        log.debug("Запрос на получение всхе событий в паблик контроллер");
+        return eventRepository.findAll();
     }
 }

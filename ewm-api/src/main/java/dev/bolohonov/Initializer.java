@@ -1,7 +1,15 @@
 package dev.bolohonov;
 
+import dev.bolohonov.server.dto.CategoryDto;
+import dev.bolohonov.server.dto.event.EventAddDto;
+import dev.bolohonov.server.dto.event.EventShortDto;
+import dev.bolohonov.server.model.Category;
+import dev.bolohonov.server.model.Event;
 import dev.bolohonov.server.model.User;
 import dev.bolohonov.server.dto.user.UserDto;
+import dev.bolohonov.server.repository.event.EventRepository;
+import dev.bolohonov.server.services.CategoryService;
+import dev.bolohonov.server.services.EventServicePrivate;
 import dev.bolohonov.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,7 +17,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,14 +28,23 @@ import java.util.logging.Logger;
 public class Initializer implements CommandLineRunner {
 
     private final UserService userService;
+    private final CategoryService categoryService;
+    private final EventServicePrivate eventServicePrivate;
+
+    private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
 
     private static final Logger logger = Logger.getLogger("Initializer");
 
     @Autowired
-    public Initializer(UserService userService, PasswordEncoder passwordEncoder
+    public Initializer(UserService userService, CategoryService categoryService,
+                       EventServicePrivate eventServicePrivate, EventRepository eventRepository,
+                       PasswordEncoder passwordEncoder
                        ) {
         this.userService = userService;
+        this.categoryService = categoryService;
+        this.eventRepository = eventRepository;
+        this.eventServicePrivate = eventServicePrivate;
         this.passwordEncoder = passwordEncoder;
 
         logger.setLevel(Level.ALL);
@@ -34,12 +53,41 @@ public class Initializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Collection<UserDto> users = userService.findAll();
+        Collection<CategoryDto> categories = categoryService.getCategories(0, 10);
+
         if (users == null || users.size() == 0) {
             logger.info("Users are empty, creating the default one!");
             createDefaultUser();
         } else {
             logger.info("Users found:");
         }
+
+        if (categories == null || categories.size() == 0) {
+            logger.info("Categories are empty, creating the default categories!");
+            createDefaultCategories();
+        }
+
+        //TODO: to delete, only for test
+        users = userService.findAll();
+        categories = categoryService.getCategories(0, 10);
+        Collection<Event> events = eventRepository.findAll();
+        if (events == null || events.size() == 0) {
+            for (int i = 1; i < 11; i++) {
+                EventAddDto eventDto = new EventAddDto(
+                new StringBuilder("Title").append(i).toString(),
+                new StringBuilder("Annotation").append(i).toString(),
+                categories.stream().findAny().get().getId(),
+                new StringBuilder("Discription").append(i).toString(),
+                LocalDateTime.now().plusDays(i),
+                false,
+                i + 1,
+                false,
+                new EventAddDto.Location(Double.valueOf(i), Double.valueOf(i + 1))
+                );
+                eventServicePrivate.addEvent(users.stream().findAny().get().getId(), eventDto);
+            }
+        }
+
     }
 
     private void createDefaultUser() {
@@ -51,5 +99,14 @@ public class Initializer implements CommandLineRunner {
                 .password_hash(passwordEncoder.encode("cGFzc3dvcmQ="))
                 .build();
         userService.saveUser(user);
+    }
+
+    private void createDefaultCategories() {
+        List<String> names = List.of("Кино", "Рыбалка", "Театр", "Музыка", "Спорт");
+
+        for (String s : names) {
+            categoryService.addCategoryByAdmin(Category.builder()
+                            .name(s).build());
+        }
     }
 }

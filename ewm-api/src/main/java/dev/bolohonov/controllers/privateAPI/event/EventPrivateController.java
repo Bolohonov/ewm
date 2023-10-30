@@ -10,15 +10,7 @@ import dev.bolohonov.server.services.EventServicePrivate;
 import dev.bolohonov.server.services.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -30,7 +22,12 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/users/{userId}/events")
+@RequestMapping("/api/${ewm.api.version}/users/{userId}/events")
+@CrossOrigin(origins = {"${ewm.origin.localhost}"},
+        allowedHeaders = {"Origin", "Authorization", "X-Requested-With", "Content-Type", "Accept", "Cookie"},
+        allowCredentials = "true",
+        methods = {RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.GET},
+        maxAge = 3600)
 public class EventPrivateController {
     private final EventServicePrivate eventService;
     private final RequestService requestService;
