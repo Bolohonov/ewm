@@ -4,7 +4,8 @@
       <LeftMenu></LeftMenu>
       <EventInfo v-show="componentVisibility.eventInfo"
                  :event-id="eventId"
-                 :event-data="eventData"></EventInfo>
+                 :event-data="eventData"
+                 :is-event-initiator="isEventInitiator" ></EventInfo>
     </w-flex>
   </w-app>
 </template>
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
       eventId: null,
+      isEventInitiator: false,
       title: 'Событие',
       menuItems: [
         { id: 'eventInfo', title: "Информация о событии", action: this.menuClick },
@@ -28,6 +30,7 @@ export default {
       componentVisibility: {
         eventInfo: true,
       },
+      userId: null,
       eventData: {}
     }
   },
@@ -39,6 +42,18 @@ export default {
         }
     );
     this.eventId = this.$route.params.id;
+    let username = this.$ewmapi.getCurrentUserName();
+
+    if (username !== 'undefined') {
+      this.$ewmapi.isEventInitiator(this.eventId, username)
+          .then(response => {
+            if (response.success) {
+              console.log(response);
+              this.isEventInitiator = response.data;
+        }
+      });
+    }
+
   },
 }
 </script>

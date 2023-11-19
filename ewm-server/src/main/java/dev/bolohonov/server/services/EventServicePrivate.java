@@ -15,15 +15,22 @@ public interface EventServicePrivate {
      */
     Optional<EventFullDto> getEventById(Long eventId);
 
-    /**
+    /**+
      * Получить список событий по id инициатора
      */
     Collection<EventShortDto> findEventsByInitiator(Long userId, Integer from, Integer size);
 
+    /**+
+     * Проверить является ли пользователь инициатором события
+     */
+    boolean isInitiator(String username, Long eventId);
+
     /**
      * Инициатор обновляет событие
      */
-    Optional<EventFullDto> updateEventByInitiator(Long userId, EventUpdateDto event);
+    default Optional<EventFullDto> updateEventByInitiator(Long userId, EventUpdateDto event) {
+        return null;
+    }
 
     /**
      * Добавить событие

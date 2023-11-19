@@ -5,7 +5,7 @@
       <main class="xl9">
         <EventPage ref="eventPage" external-ref="eventPage" v-show="componentVisibility.eventPage"></EventPage>
         <EventList ref="eventList" external-ref="eventList"
-                     v-show="componentVisibility.eventList" @create-request="onCreateEvent"></EventList>
+                   v-show="componentVisibility.eventList" @create-request="onCreateEvent"></EventList>
       </main>
     </w-flex>
   </w-app>

@@ -2,13 +2,13 @@ package dev.bolohonov;
 
 import dev.bolohonov.server.dto.CategoryDto;
 import dev.bolohonov.server.dto.event.EventAddDto;
-import dev.bolohonov.server.dto.event.EventShortDto;
 import dev.bolohonov.server.model.Category;
 import dev.bolohonov.server.model.Event;
 import dev.bolohonov.server.model.User;
 import dev.bolohonov.server.dto.user.UserDto;
 import dev.bolohonov.server.repository.event.EventRepository;
 import dev.bolohonov.server.services.CategoryService;
+import dev.bolohonov.server.services.EventServiceAdmin;
 import dev.bolohonov.server.services.EventServicePrivate;
 import dev.bolohonov.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,8 @@ public class Initializer implements CommandLineRunner {
     private final CategoryService categoryService;
     private final EventServicePrivate eventServicePrivate;
 
+    private final EventServiceAdmin eventServiceAdmin;
+
     private final EventRepository eventRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -38,11 +40,12 @@ public class Initializer implements CommandLineRunner {
 
     @Autowired
     public Initializer(UserService userService, CategoryService categoryService,
-                       EventServicePrivate eventServicePrivate, EventRepository eventRepository,
+                       EventServicePrivate eventServicePrivate, EventServiceAdmin eventServiceAdmin, EventRepository eventRepository,
                        PasswordEncoder passwordEncoder
                        ) {
         this.userService = userService;
         this.categoryService = categoryService;
+        this.eventServiceAdmin = eventServiceAdmin;
         this.eventRepository = eventRepository;
         this.eventServicePrivate = eventServicePrivate;
         this.passwordEncoder = passwordEncoder;
@@ -57,7 +60,7 @@ public class Initializer implements CommandLineRunner {
 
         if (users == null || users.size() == 0) {
             logger.info("Users are empty, creating the default one!");
-            createDefaultUser();
+            createDefaultUsers();
         } else {
             logger.info("Users found:");
         }
@@ -77,26 +80,54 @@ public class Initializer implements CommandLineRunner {
                 new StringBuilder("Title").append(i).toString(),
                 new StringBuilder("Annotation").append(i).toString(),
                 categories.stream().findAny().get().getId(),
-                new StringBuilder("Discription").append(i).toString(),
+                new StringBuilder("Description").append(i).toString(),
                 LocalDateTime.now().plusDays(i),
                 false,
                 i + 1,
                 false,
                 new EventAddDto.Location(Double.valueOf(i), Double.valueOf(i + 1))
                 );
-                eventServicePrivate.addEvent(users.stream().findAny().get().getId(), eventDto);
+                Long eventId = eventServicePrivate
+                        .addEvent(userService.getUserByName("admin1").get().getId(), eventDto).get().getId();
+                eventServiceAdmin.publishEvent(eventId);
+            }
+
+            for (int i = 11; i < 21; i++) {
+                EventAddDto eventDto = new EventAddDto(
+                        new StringBuilder("Title").append(i).toString(),
+                        new StringBuilder("Annotation").append(i).toString(),
+                        categories.stream().findAny().get().getId(),
+                        new StringBuilder("Description").append(i).toString(),
+                        LocalDateTime.now().plusDays(i),
+                        false,
+                        i + 1,
+                        false,
+                        new EventAddDto.Location(Double.valueOf(i), Double.valueOf(i + 1))
+                );
+                Long eventId = eventServicePrivate
+                        .addEvent(userService.getUserByName("user1").get().getId(), eventDto).get().getId();
+                eventServiceAdmin.publishEvent(eventId);
             }
         }
 
     }
 
-    private void createDefaultUser() {
+    private void createDefaultUsers() {
         User user = User.builder()
-                .name("admin")
+                .name("admin1")
                 .firstname("ivan")
                 .lastname("petrov")
                 .email("admin@ewm.ru")
                 .password_hash(passwordEncoder.encode("cGFzc3dvcmQ="))
+                .build();
+        userService.saveUser(user);
+
+        user = User.builder()
+                .name("user1")
+                .firstname("petr")
+                .lastname("ivanov")
+                .email("user@ewm.ru")
+                .password_hash(passwordEncoder.encode("2cGFzc3dvcmQ="))
                 .build();
         userService.saveUser(user);
     }

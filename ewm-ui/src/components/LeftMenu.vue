@@ -1,11 +1,11 @@
 <template>
     <aside class="xl1">
-        <w-toolbar shadow vertical left color="blue-dark3">
+        <w-toolbar shadow vertical left>
           <div class="xs12 gray--bg"><img alt="Logo" src="../assets/ewm-logo.png" :width="80" :height="80"></div>
           <div class="spacer no-grow mx3"></div>
             <span v-for="item in menuItems" :key="item.id">
                 <w-divider color="blue-light6" class="my6"></w-divider>
-                <a href="#" :id="`left-menu-${item.id}`" v-on:click="item.action">{{ item.title }} </a>
+                <a href="#" :id="`left-menu-${item.id}`" v-on:click="item.action" class="blue">{{ item.title }} </a>
             </span>
         </w-toolbar>
     </aside>

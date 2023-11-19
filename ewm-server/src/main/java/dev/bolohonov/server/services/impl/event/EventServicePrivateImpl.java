@@ -73,6 +73,14 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         return eventMapper.toEventShortDto(events);
     }
 
+    @Override
+    public boolean isInitiator(String userName, Long eventId) {
+        return userService.getUserById(eventService
+                        .getEventFromRepository(eventId)
+                        .getInitiatorId()).get().getName()
+                .equals(userService.getUserByName(userName).get().getName());
+    }
+
     @Transactional
     @Override
     public Optional<EventFullDto> updateEventByInitiator(Long userId, EventUpdateDto event) {

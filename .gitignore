@@ -30,3 +30,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### UI
+/ewm-ui/target/
+/ewm-ui/node_modules/
+/ewm-ui/node/

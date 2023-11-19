@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 public class Category {
     /**
      * уникальный идентификатор пользователя
+     *
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

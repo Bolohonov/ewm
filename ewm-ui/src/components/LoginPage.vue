@@ -4,7 +4,7 @@
       <div class="xs3 gap3">
         <w-flex align-center no-grow wrap column>
           <div class="sh1">
-            <div class="xs12 gray--bg"><img alt="Logo" src="../assets/ewm-logo.png" :width="250" :height="250"></div>
+            <div class="xs12 grey-dark6--bg"><img alt="Logo" src="../assets/ewm-logo.png" :width="250" :height="250"></div>
             <w-input placeholder="username" v-model="username" class="xs12 pa4 align-self-center" />
             <w-input placeholder="password" v-model="password" class="xs12 pa4" type='password' />
             <w-button class="xs8 pa4 mb4" v-on:click="onLoginClick">Login</w-button>

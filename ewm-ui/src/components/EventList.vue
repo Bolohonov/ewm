@@ -2,8 +2,8 @@
   <w-app>
     <w-flex no-grow>
       <div class="skipper xl1"></div>
-      <w-toolbar color="blue-dark3">
-        <div class="title3">{{title}}</div>
+      <w-toolbar color="blue-light6">
+<!--        <div class="title3">{{title}}</div>-->
         <div class="spacer"></div>
       </w-toolbar>
     </w-flex>
@@ -11,7 +11,7 @@
       <LeftMenu></LeftMenu>
       <w-flex class="column pa3 align-start">
         <div class="grow">
-          <div class="title3 mb6">{{title}}</div>
+          <div class="title3 mb6 blue-dark3 size--xl">{{title}}</div>
 <!--          <w-button-->
 <!--              class="mr2 mb1"-->
 <!--              @click="table.activeFilter = 0"-->
@@ -23,7 +23,7 @@
                    :items="events"
                    fixed-headers
                    @row-select="onEventRowClick"
-                   :selectable-rows=1></w-table>
+                   :selectable-rows=1 class="align-center blue-dark3"></w-table>
         </div>
       </w-flex>
     </w-flex>

@@ -13,6 +13,8 @@ const ewmapi = {
         {
             axios.post(URL, loginData).then(response => {
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("userName", response.data.username);
+                localStorage.setItem("userId", response.data.id);
                 result.success = true;
                 result.reason = response.data.token;
                 resolve(result);
@@ -26,6 +28,22 @@ const ewmapi = {
     },
     isAuthorized() {
         return localStorage.getItem("token") != null;
+    },
+    getCurrentUserName() {
+        return localStorage.getItem("userName");
+    },
+    isEventInitiator(eventId, username) {
+        const URL = BASE_URL+'/api/'+API_VERSION +'/users/' + username + '/events/' + eventId + '/initiator/';
+
+        let result = {"success":false, "reason":'', data:'', status: ''};
+
+        if (localStorage.getItem("token") == null) {
+            result.reason("Not authorized");
+            return new Promise(resolve => {
+                resolve(result);
+            });
+        }
+        return this.get(URL, result);
     },
     logout() {
         const URL = BASE_URL+'/api/'+API_VERSION+'/auth/signout';
@@ -89,7 +107,17 @@ const ewmapi = {
             });
         }
 
-        return this.get(URL, result);
+        return new Promise(resolve => {
+            const headers = {'Authorization': 'Bearer '+ localStorage.getItem("token")};
+            axios.get(URL, {headers:headers}).then(response => {
+                result.success = true;
+                result.data = response.data;
+                resolve(result);
+            }).catch(error => {
+                result.reason = error;
+                resolve(result);
+            });
+        });
     },
     // pdfReport(requestId, files) {
     //     return this.uploadReport(requestId, files, "pdf");
