@@ -100,6 +100,14 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Transactional
     @Override
+    public Optional<EventFullDto> addEvent(String userName, EventAddDto event) {
+        validateEventDate(event);
+        Event newEvent = eventMapper.fromEventAddDto(event, userService.getUserByName(userName).get().getId());
+        return of(eventMapper.toEventFullDto(eventRepository.save(newEvent)));
+    }
+
+    @Transactional
+    @Override
     public Optional<EventFullDto> changeEventStateToCanceled(Long userId, Long eventId) {
         log.debug("Получен запрос на отмену события c id {}", eventId);
         Event event = eventService.getEventFromRepository(eventId);

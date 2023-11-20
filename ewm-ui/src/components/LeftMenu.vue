@@ -19,7 +19,7 @@
                 menuItems: [
                     {id: 0, title: 'Мои события', action: this.myRequestHandler},
                     {id: 0, title: 'Все события', action: this.allRequestsHandler},
-                    {id: 0, title: 'Создать событие', action: this.createRequestHandler},
+                    {id: 0, title: 'Создать событие', action: this.createEventHandler},
                     {id: 0, title: 'Выйти из системы', action: this.logoutHandler},
                 ]
             }
@@ -33,24 +33,25 @@
                 e.preventDefault();
                 this.$router.push('/');
             },
-            createRequestHandler(e) {
+            createEventHandler(e) {
                 e.preventDefault();
-                let a = this.$ewmapi.createEvent();
+                // this.$ewmapi.createEvent();
+              this.$router.push('/events/create');
 
-                a.then(response => {
-                    if (response.success) {
-                        this.$waveui.notify({message:'Черновик события сохранен', timeout:3000, type:'info'});
-                        let eventId = parseInt(response.data.id);
-                        this.$router.push('/event/' + eventId);
-                    } else {
-                        console.log(response);
-                        if (response.status === 401) {
-                            this.$router.push('/login');
-                        } else {
-                            this.$waveui.notify({message:'Ошибка сервера', timeout:3000, type:'error'});
-                        }
-                    }
-                });
+                // a.then(response => {
+                //     if (response.success) {
+                //         this.$waveui.notify({message:'Черновик события сохранен', timeout:3000, type:'info'});
+                //         let eventId = parseInt(response.data.id);
+                //         this.$router.push('/event/' + eventId);
+                //     } else {
+                //         console.log(response);
+                //         if (response.status === 401) {
+                //             this.$router.push('/login');
+                //         } else {
+                //             this.$waveui.notify({message:'Ошибка сервера', timeout:3000, type:'error'});
+                //         }
+                //     }
+                // });
             },
             logoutHandler(e) {
                 e.preventDefault();

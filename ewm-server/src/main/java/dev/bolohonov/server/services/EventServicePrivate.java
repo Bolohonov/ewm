@@ -38,6 +38,11 @@ public interface EventServicePrivate {
     Optional<EventFullDto> addEvent(Long userId, EventAddDto event);
 
     /**
+     * Добавить событие
+     */
+    Optional<EventFullDto> addEvent(String userName, EventAddDto event);
+
+    /**
      * Отменить событие - статус Canceled
      */
     Optional<EventFullDto> changeEventStateToCanceled(Long userId, Long eventId);

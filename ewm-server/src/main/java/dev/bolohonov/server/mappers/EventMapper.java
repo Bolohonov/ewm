@@ -98,13 +98,13 @@ public class EventMapper {
                 event.getEventDate(),
                 userId,
                 event.getPaid(),
-                event.getParticipantLimit() != null ? event.getParticipantLimit() : 0,
-                null,
-                event.getRequestModeration(),
+                event.getParticipantLimit() != null ? event.getParticipantLimit() : 1,
+                LocalDateTime.now(),
+                event.getRequestModeration() != null ? event.getRequestModeration() : false,
                 EventState.PENDING,
                 0L,
-                event.getLocation().getLat(),
-                event.getLocation().getLon(),
+                event.getLocation() != null ? event.getLocation().getLat() : 0.0,
+                event.getLocation() != null ? event.getLocation().getLon() : 0.0,
                 0L
         );
     }

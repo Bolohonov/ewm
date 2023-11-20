@@ -99,7 +99,7 @@ public class Initializer implements CommandLineRunner {
                         categories.stream().findAny().get().getId(),
                         new StringBuilder("Description").append(i).toString(),
                         LocalDateTime.now().plusDays(i),
-                        false,
+                        true,
                         i + 1,
                         false,
                         new EventAddDto.Location(Double.valueOf(i), Double.valueOf(i + 1))

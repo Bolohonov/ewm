@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-// import Vuex from 'vuex'
 import App from './App.vue'
 import WaveUI from 'wave-ui'
 import 'wave-ui/dist/wave-ui.css'
@@ -14,13 +13,15 @@ import LoginPage from "@/components/LoginPage";
 import ewmapi from "@/plugins/ewmapi";
 import ewmsession from "@/plugins/ewmsession";
 import EventPage from "@/components/EventPage";
+import EventAddPage from "@/components/EventAddPage"
 
 const app = createApp(App);
 
 const routes = [
     { path: '/', name: "Main", component: StartPage },
     { path: '/events/:id', name: "Event", component: EventPage },
-    { path: '/login', name: "Login", component:  LoginPage}
+    { path: '/login', name: "Login", component:  LoginPage},
+    { path: '/events/create', name: "EventAddPage", component:  EventAddPage},
 ];
 
 const router = createRouter({
@@ -37,6 +38,7 @@ app.use(WaveUI, {
 });
 
 app.component("event-page", EventPage);
+app.component("event-add-page", EventAddPage);
 
 // new WaveUI(app, {});
 

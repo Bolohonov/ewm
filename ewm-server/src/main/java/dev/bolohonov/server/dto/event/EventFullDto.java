@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EventFullDto {
     /**
-     * уникальный идентификатор
+     * Уникальный идентификатор
      */
     private Long id;
     /**

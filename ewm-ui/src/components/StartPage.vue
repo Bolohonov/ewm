@@ -5,7 +5,9 @@
       <main class="xl9">
         <EventPage ref="eventPage" external-ref="eventPage" v-show="componentVisibility.eventPage"></EventPage>
         <EventList ref="eventList" external-ref="eventList"
-                   v-show="componentVisibility.eventList" @create-request="onCreateEvent"></EventList>
+                   v-show="componentVisibility.eventList" ></EventList>
+        <EventAddPage ref="eventAddPage" external-ref="eventAddPage" v-show="componentVisibility.eventAdd"
+                      @create-event="onCreateEvent"> </EventAddPage>
       </main>
     </w-flex>
   </w-app>
@@ -15,9 +17,11 @@
 import '@mdi/font/css/materialdesignicons.min.css'
 import EventPage from "./EventPage";
 import EventList from "./EventList";
+import EventAddPage from "./EventAddPage"
+
 export default {
   name: "IndexPage",
-  components: {EventPage, EventList},
+  components: {EventPage, EventList, EventAddPage},
   data() {
     return {
       components: {
@@ -26,7 +30,8 @@ export default {
       },
       componentVisibility: {
         eventPage: false,
-        eventList: true
+        eventList: true,
+        eventAddPage: false
       },
     }
   },
@@ -53,25 +58,32 @@ export default {
       });
     },
     onCreateEvent() {
-      // this.componentVisibility.requestList = false;
-      // this.componentVisibility.requestPage = true;
 
-      let a = this.$ewmapi.createEvent();
+      if (!this.$ewmapi.isAuthorized()) {
+        console.log('Not authorized!');
+        this.$router.push('/login');
+      }
 
-      a.then(response => {
-        if (response.success) {
-          this.$waveui.notify({message:'Черновик события сохранен', timeout:3000, type:'info'});
-          let eventId = parseInt(response.data.id);
-          this.$router.push('/events/'+eventId);
-        } else {
-          console.log(response);
-          if (response.status === 401) {
-            this.$router.push('/login');
-          } else {
-            this.$waveui.notify({message:'Ошибка сервера', timeout:3000, type:'error'});
-          }
-        }
-      });
+      this.componentVisibility.eventPage = false;
+      this.componentVisibility.eventList = false;
+      this.componentVisibility.eventAddPage = true;
+
+      this.$router.push("/events/create")
+
+      // a.then(response => {
+      //   if (response.success) {
+      //     this.$waveui.notify({message:'Черновик события сохранен', timeout:3000, type:'info'});
+      //     let eventId = parseInt(response.data.id);
+      //     this.$router.push('/events/'+eventId);
+      //   } else {
+      //     console.log(response);
+      //     if (response.status === 401) {
+      //       this.$router.push('/login');
+      //     } else {
+      //       this.$waveui.notify({message:'Ошибка сервера', timeout:3000, type:'error'});
+      //     }
+      //   }
+      // });
     }
   }
 }

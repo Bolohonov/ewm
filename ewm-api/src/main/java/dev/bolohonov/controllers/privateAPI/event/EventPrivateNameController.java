@@ -3,6 +3,7 @@ package dev.bolohonov.controllers.privateAPI.event;
 import dev.bolohonov.server.dto.event.EventAddDto;
 import dev.bolohonov.server.dto.event.EventFullDto;
 import dev.bolohonov.server.dto.event.EventShortDto;
+import dev.bolohonov.server.dto.event.EventTestDto;
 import dev.bolohonov.server.dto.event.EventUpdateDto;
 import dev.bolohonov.server.dto.RequestDto;
 import dev.bolohonov.server.dto.user.UserWithRatingDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Collection;
@@ -36,6 +38,12 @@ public class EventPrivateNameController {
     @ResponseStatus(OK)
     public Boolean isInitiator(@PathVariable String userName, @PathVariable Long eventId) {
         return eventService.isInitiator(userName, eventId);
+    }
+
+    @PostMapping("/add")
+    @ResponseStatus(OK)
+    public Optional<EventFullDto> add(@PathVariable String userName, @RequestBody EventAddDto event) {
+        return eventService.addEvent(userName, event);
     }
 
 }

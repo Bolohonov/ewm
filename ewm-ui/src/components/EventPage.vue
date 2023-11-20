@@ -13,6 +13,7 @@
 <script>
 import EventInfo from "./EventInfo";
 import LeftMenu from "./LeftMenu";
+
 export default {
   name: "EventPage",
   components: {
@@ -29,6 +30,7 @@ export default {
       ],
       componentVisibility: {
         eventInfo: true,
+        eventAdd: false
       },
       userId: null,
       eventData: {}
@@ -54,6 +56,6 @@ export default {
       });
     }
 
-  },
+  }
 }
 </script>

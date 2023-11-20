@@ -80,11 +80,12 @@ const ewmapi = {
             });
         });
     },
-    createEvent() {
-        let userId = localStorage.getItem("id");
-        const URL = BASE_URL+'/api/'+API_VERSION+'/users/'+userId+"/events";
-        let result = {"success":false, "reason":'', data:''};
-        let data = {};
+    createEvent(eventData, userName) {
+        console.log(eventData)
+        console.log(userName)
+        const URL = BASE_URL+'/api/'+API_VERSION+'/users/' + userName + '/events/add';
+        let result = {"success":false, "reason":'', data:'', status: ''};
+        let data = eventData;
 
         if (localStorage.getItem("token") == null) {
             result.reason("Not authorized");
@@ -95,8 +96,46 @@ const ewmapi = {
 
         return this.post(URL, data, result);
     },
+    // testPost() {
+    //     const URL = BASE_URL+'/api/'+API_VERSION+'/users/admin1/events/test';
+    //     let result = {"success":false, "reason":'', data:'', status: ''};
+    //     let data = null;
+    //
+    //     if (localStorage.getItem("token") == null) {
+    //         result.reason("Not authorized");
+    //         return new Promise(resolve => {
+    //             resolve(result);
+    //         });
+    //     }
+    //
+    //     return this.post(URL, data, result);
+    // },
     getEvents() {
         const URL = BASE_URL+'/api/'+API_VERSION+'/events/all2';
+
+        let result = {"success":false, "reason":'', data:'', status: ''};
+
+        if (localStorage.getItem("token") == null) {
+            result.reason("Not authorized");
+            return new Promise(resolve => {
+                resolve(result);
+            });
+        }
+
+        return new Promise(resolve => {
+            const headers = {'Authorization': 'Bearer '+ localStorage.getItem("token")};
+            axios.get(URL, {headers:headers}).then(response => {
+                result.success = true;
+                result.data = response.data;
+                resolve(result);
+            }).catch(error => {
+                result.reason = error;
+                resolve(result);
+            });
+        });
+    },
+    getCategories() {
+        const URL = BASE_URL+'/api/'+API_VERSION+'/categories';
 
         let result = {"success":false, "reason":'', data:'', status: ''};
 
@@ -206,21 +245,21 @@ const ewmapi = {
 
         return this.get(URL, result);
     },
-    saveEvent(dto) {
-        let userId = localStorage.getItem("id");
-        const URL = BASE_URL+'/api/'+API_VERSION+'/events/'+userId;
-
-        let result = {"success":false, "reason":'', data:'', status: ''};
-
-        if (localStorage.getItem("token") == null) {
-            result.reason("Not authorized");
-            return new Promise(resolve => {
-                resolve(result);
-            });
-        }
-
-        return this.post(URL, dto, result);
-    },
+    // saveEvent(dto) {
+    //     let userId = localStorage.getItem("id");
+    //     const URL = BASE_URL+'/api/'+API_VERSION+'/events/'+userId;
+    //
+    //     let result = {"success":false, "reason":'', data:'', status: ''};
+    //
+    //     if (localStorage.getItem("token") == null) {
+    //         result.reason("Not authorized");
+    //         return new Promise(resolve => {
+    //             resolve(result);
+    //         });
+    //     }
+    //
+    //     return this.post(URL, dto, result);
+    // },
     // innCheck(inn) {
     //     const URL = BASE_URL+'/api/'+API_VERSION+'/requests/fns/'+inn;
     //

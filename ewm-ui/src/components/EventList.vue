@@ -3,7 +3,6 @@
     <w-flex no-grow>
       <div class="skipper xl1"></div>
       <w-toolbar color="blue-light6">
-<!--        <div class="title3">{{title}}</div>-->
         <div class="spacer"></div>
       </w-toolbar>
     </w-flex>
@@ -12,13 +11,6 @@
       <w-flex class="column pa3 align-start">
         <div class="grow">
           <div class="title3 mb6 blue-dark3 size--xl">{{title}}</div>
-<!--          <w-button-->
-<!--              class="mr2 mb1"-->
-<!--              @click="table.activeFilter = 0"-->
-<!--              round-->
-<!--              :outline="table.activeFilter !== 0">-->
-<!--            No filter-->
-<!--          </w-button>-->
           <w-table :headers="headers"
                    :items="events"
                    fixed-headers
@@ -60,8 +52,7 @@ export default {
     this.updateList();
   },
   methods: {
-    onCreateEventClick() {
-      this.$emit('createEvent');
+    onCreateEvent() {
     },
     updateList() {
       let a = this.$ewmapi.getEvents();

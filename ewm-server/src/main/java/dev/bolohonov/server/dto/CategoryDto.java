@@ -7,11 +7,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class CategoryDto {
     /**
-     * уникальный идентификатор пользователя
+     * Уникальный идентификатор пользователя
      */
     private Long id;
     /**
-     * название категории
+     * Название категории
      */
     private String name;
 }
