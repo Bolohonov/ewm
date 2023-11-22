@@ -32,15 +32,12 @@ const router = createRouter({
 app.use(router);
 app.use(ewmapi);
 app.use(ewmsession);
-// app.use(Vuex);
 app.use(WaveUI, {
     theme: 'dark'
 });
 
 app.component("event-page", EventPage);
 app.component("event-add-page", EventAddPage);
-
-// new WaveUI(app, {});
 
 app.config.globalProperties.emitter = emitter;
 
