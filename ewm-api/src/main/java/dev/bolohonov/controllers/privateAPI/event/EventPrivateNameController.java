@@ -3,7 +3,6 @@ package dev.bolohonov.controllers.privateAPI.event;
 import dev.bolohonov.server.dto.event.EventAddDto;
 import dev.bolohonov.server.dto.event.EventFullDto;
 import dev.bolohonov.server.dto.event.EventShortDto;
-import dev.bolohonov.server.dto.event.EventTestDto;
 import dev.bolohonov.server.dto.event.EventUpdateDto;
 import dev.bolohonov.server.dto.RequestDto;
 import dev.bolohonov.server.dto.user.UserWithRatingDto;
