@@ -53,8 +53,6 @@
               title-class="blue-dark3 bdrs4 title3">
         {{eventData.rating}}
       </w-card>
-
-      <w-button class="xs8 pa4 mb4" v-on:click="onSaveEventTest">Сохранить</w-button>
     </div>
 
 
