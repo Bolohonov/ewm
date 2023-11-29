@@ -14,6 +14,7 @@ import ewmapi from "@/plugins/ewmapi";
 import ewmsession from "@/plugins/ewmsession";
 import EventPage from "@/components/EventPage";
 import EventAddPage from "@/components/EventAddPage"
+import EventSearchPage from "@/components/EventSearchPage"
 
 const app = createApp(App);
 
@@ -22,6 +23,7 @@ const routes = [
     { path: '/events/:id', name: "Event", component: EventPage },
     { path: '/login', name: "Login", component:  LoginPage},
     { path: '/events/create', name: "EventAddPage", component:  EventAddPage},
+    { path: '/events/search', name: "EventSearchPage", component:  EventSearchPage},
 ];
 
 const router = createRouter({
@@ -38,6 +40,7 @@ app.use(WaveUI, {
 
 app.component("event-page", EventPage);
 app.component("event-add-page", EventAddPage);
+app.component("event-search-page", EventSearchPage);
 
 app.config.globalProperties.emitter = emitter;
 

@@ -31,14 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Optional.of;
@@ -59,6 +53,22 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         log.debug("Получен запрос на поиск события c id {}", eventId);
         Event event = eventService.getEventFromRepository(eventId);
         return of(eventMapper.toEventFullDto(event));
+    }
+
+    @Transactional
+    @Override
+    public Collection<EventFullDto> findEvents(List<Long> users, List<String> states, List<Long> categories,
+                                               String rangeStart, String rangeEnd, Integer from, Integer size) {
+        log.debug("Получен запрос на вывод списка событий администратором");
+        Collection<Event> events = eventRepository.getEventsByAdmin(
+                eventService.getSetOfParams(users),
+                eventService.getSetOfParams(states),
+                eventService.getSetOfParams(categories),
+                getAndValidateTimeRange(rangeStart, rangeEnd),
+                from,
+                size
+        );
+        return eventMapper.toEventFullDto(events);
     }
 
     @Transactional(readOnly = true)
@@ -152,6 +162,22 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
         return UserMapper.toUserDtoWithRating(usersRatingPage);
+    }
+
+    private Map<String, LocalDateTime> getAndValidateTimeRange(String rangeStart, String rangeEnd) {
+        log.info("Получение временного интервала в eventService");
+        System.out.println(rangeStart + " " + rangeEnd);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss");
+        Map<String, LocalDateTime> timeMap = new HashMap<>();
+        if (rangeStart != null) {
+            LocalDateTime parsedStart = LocalDateTime.parse(rangeStart, formatter);
+            timeMap.put("start", parsedStart);
+        }
+        if (rangeEnd != null) {
+            LocalDateTime parsedEnd = LocalDateTime.parse(rangeEnd, formatter);
+            timeMap.put("end", parsedEnd);
+        }
+        return timeMap;
     }
 
     public Event addLikeOrDislike(Long userId, Long eventId, Boolean isLike) {

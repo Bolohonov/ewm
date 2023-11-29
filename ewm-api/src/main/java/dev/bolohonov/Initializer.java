@@ -2,10 +2,10 @@ package dev.bolohonov;
 
 import dev.bolohonov.server.dto.CategoryDto;
 import dev.bolohonov.server.dto.event.EventAddDto;
+import dev.bolohonov.server.dto.user.UserDto;
 import dev.bolohonov.server.model.Category;
 import dev.bolohonov.server.model.Event;
 import dev.bolohonov.server.model.User;
-import dev.bolohonov.server.dto.user.UserDto;
 import dev.bolohonov.server.repository.event.EventRepository;
 import dev.bolohonov.server.services.CategoryService;
 import dev.bolohonov.server.services.EventServiceAdmin;

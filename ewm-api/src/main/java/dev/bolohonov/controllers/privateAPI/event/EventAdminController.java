@@ -30,19 +30,19 @@ import static org.springframework.http.HttpStatus.OK;
 public class EventAdminController {
     private final EventServiceAdmin eventService;
 
-    @GetMapping
-    @ResponseStatus(OK)
-    public Collection<EventFullDto> findEventsByUser(@RequestParam(required = false) List<Long> users,
-                                                     @RequestParam(required = false) List<String> states,
-                                                     @RequestParam(required = false) List<Long> categories,
-                                                     @RequestParam(required = false) String rangeStart,
-                                                     @RequestParam(required = false) String rangeEnd,
-                                                     @PositiveOrZero @RequestParam(name = "from", defaultValue = "0")
-                                                     Integer from,
-                                                     @Positive @RequestParam(name = "size", defaultValue = "10")
-                                                     Integer size) {
-        return eventService.findEvents(users, states, categories, rangeStart, rangeEnd, from, size);
-    }
+//    @GetMapping
+//    @ResponseStatus(OK)
+//    public Collection<EventFullDto> findEventsByUser(@RequestParam(required = false) List<Long> users,
+//                                                     @RequestParam(required = false) List<String> states,
+//                                                     @RequestParam(required = false) List<Long> categories,
+//                                                     @RequestParam(required = false) String rangeStart,
+//                                                     @RequestParam(required = false) String rangeEnd,
+//                                                     @PositiveOrZero @RequestParam(name = "from", defaultValue = "0")
+//                                                     Integer from,
+//                                                     @Positive @RequestParam(name = "size", defaultValue = "10")
+//                                                     Integer size) {
+//        return eventService.findEvents(users, states, categories, rangeStart, rangeEnd, from, size);
+//    }
 
     @PutMapping("/{eventId}")
     @ResponseStatus(OK)

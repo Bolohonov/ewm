@@ -20,6 +20,7 @@
                     {id: 0, title: 'Мои события', action: this.myRequestHandler},
                     {id: 0, title: 'Все события', action: this.allRequestsHandler},
                     {id: 0, title: 'Создать событие', action: this.createEventHandler},
+                    {id: 0, title: 'Поиск события', action: this.searchEventHandler},
                     {id: 0, title: 'Выйти из системы', action: this.logoutHandler},
                 ]
             }
@@ -32,6 +33,10 @@
             allRequestsHandler(e) {
                 e.preventDefault();
                 this.$router.push('/');
+            },
+            searchEventHandler(e) {
+              e.preventDefault();
+              this.$router.push('/events/search');
             },
             createEventHandler(e) {
                 e.preventDefault();

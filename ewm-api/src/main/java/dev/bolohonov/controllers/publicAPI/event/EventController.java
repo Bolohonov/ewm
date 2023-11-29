@@ -65,7 +65,7 @@ public class EventController {
     @ResponseStatus(OK)
     public Collection<Event> findEvents() {
 //        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
-        log.debug("Запрос на получение всхе событий в паблик контроллер");
+        log.debug("Запрос на получение всех событий в паблик контроллер");
         return eventRepository.findAll();
     }
 }

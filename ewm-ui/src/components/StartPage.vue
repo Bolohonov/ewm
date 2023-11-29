@@ -5,6 +5,9 @@
       <main class="xl9">
         <EventPage ref="eventPage" external-ref="eventPage" v-show="componentVisibility.eventPage"></EventPage>
         <EventList ref="eventList" external-ref="eventList"
+                   list-title="Список всех событий"
+                   :events="events"
+                   :component-visibility-menu="true"
                    v-show="componentVisibility.eventList" ></EventList>
         <EventAddPage ref="eventAddPage" external-ref="eventAddPage" v-show="componentVisibility.eventAdd"
                       @create-event="onCreateEvent"> </EventAddPage>
@@ -33,6 +36,7 @@ export default {
         eventList: true,
         eventAddPage: false
       },
+      events: []
     }
   },
   created() {
@@ -40,6 +44,7 @@ export default {
       console.log('Not authorized!');
       this.$router.push('/login');
     }
+    this.updateList();
   },
   methods: {
     activateComponent(e) {
@@ -54,6 +59,24 @@ export default {
           this.$router.push('/login');
         } else {
           this.$waveui.notify({message:'Ошибка', timeout:3000, type:'error'});
+        }
+      });
+    },
+    updateList() {
+      let a = this.$ewmapi.getEvents();
+
+      a.then(response => {
+        if (response.success) {
+          console.log(response);
+          this.events = response.data;
+        } else {
+          console.log('updateList error:');
+          console.log(response);
+          if (response.status === 401) {
+            this.$router.push('/login');
+          } else {
+            this.$waveui.notify({message:'Ошибка сервера', timeout:3000, type:'error'});
+          }
         }
       });
     },

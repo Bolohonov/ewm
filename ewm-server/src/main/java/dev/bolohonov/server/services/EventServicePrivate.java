@@ -7,9 +7,21 @@ import dev.bolohonov.server.dto.event.EventUpdateDto;
 import dev.bolohonov.server.dto.user.UserWithRatingDto;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface EventServicePrivate {
+    /**
+     * Получить список событий администратором
+     * определенных пользователей users,
+     * определенных статусов states,
+     * из выбранных категорий categories,
+     * в заданном временном интервале rangeStart - rangeEnd
+     * pagination from & size
+     */
+    Collection<EventFullDto> findEvents(List<Long> users, List<String> states, List<Long> categories,
+                                        String rangeStart, String rangeEnd, Integer from, Integer size);
+
     /**
      * Получить событие по id
      */

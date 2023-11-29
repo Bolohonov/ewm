@@ -96,6 +96,42 @@ const ewmapi = {
 
         return this.post(URL, data, result);
     },
+    searchEvents(searchData, userName) {
+        const URL = BASE_URL+'/api/'+API_VERSION+'/users/' + userName + '/events/search';
+
+        let result = {"success":false, "reason":'', data:'', status: ''};
+
+        if (localStorage.getItem("token") == null) {
+            result.reason("Not authorized");
+            return new Promise(resolve => {
+                resolve(result);
+            });
+        }
+
+        const data = new URLSearchParams();
+        data.append('categories', searchData.categories);
+        data.append('rangeStart', searchData.startDate);
+        data.append('rangeEnd', searchData.endDate);
+
+        return new Promise(resolve => {
+            const headers = {'Authorization': 'Bearer '+ localStorage.getItem("token"), 'Content-Type': 'application/json'};
+            axios({
+                method: 'get',
+                url: URL,
+                headers: headers,
+                params: data
+            })
+                .then(response => {
+                    result.success = true;
+                    result.data = response.data;
+                    resolve(result);
+                })
+                .catch(error => {
+                    result.reason = error;
+                    resolve(result);
+                });
+        });
+    },
     getEvents() {
         const URL = BASE_URL+'/api/'+API_VERSION+'/events/all2';
 
