@@ -30,23 +30,29 @@
                      label="Описание"
                      placeholder="Описание (максимум 500 знаков)"></w-input>
 
+            <w-select
+                class="mt4"
+                :validators="[validators.required]"
+                :items="categories"
+                :item-label-key="categoriesKey"
+                :item-value-key="categoriesValue"
+                v-model="selectCategory"
+                label="Категория"
+                placeholder="Выберите категорию">
+            </w-select>
+
           </w-form>
         </w-card>
 
-        <w-select
-            class="mt4"
-            :items="categories"
-            :item-label-key="categoriesKey"
-            :item-value-key="categoriesValue"
-            v-model="categoriesValue"
-            label="Категория"
-            placeholder="Выберите категорию">
-        </w-select>
 
         <w-card column class="align-left bdrs4" shadow title="Дата и время события"
                 title-class="blue-dark3 bdrs4 title3">
-          <!--                no-border title="Дата и время" color="primary body text-left"-->
-          <VueDatePicker :dark=true class="dp__theme_dark" v-model="selectDate"></VueDatePicker>
+          <VueDatePicker :dark=true
+                         class="dp__theme_dark"
+                         locale="ru"
+                         @update:model-value="handleDate = true"
+                         v-model="selectDate">
+          </VueDatePicker>
         </w-card>
 
         <w-card column class="align-left bdrs4" shadow title="Параметры события"
@@ -65,6 +71,78 @@
 
           </w-form>
         </w-card>
+
+          <w-flex wrap>
+            <w-button class="px4" v-on:click="onClickEventDuration">
+              Установить продолжительность
+            </w-button>
+            <w-divider
+                class="mx6"
+                vertical
+                color="white">
+            </w-divider>
+            <div class="ml3">
+              Дата и время окончания: {{this.dateFromDuration.toLocaleString()}}
+            </div>
+
+          </w-flex>
+          <w-dialog
+              v-model="dialog.show"
+              :fullscreen="dialog.fullscreen"
+              :width="dialog.width"
+              :persistent=true
+              title-class="blue-dark3">
+            <template #title>
+              <w-icon class="mr2">mdi mdi-tune</w-icon>
+              Задать продолжительность
+            </template>
+              <w-slider
+                  class="mt4"
+                  v-model="durationMinutes"
+                  thumb-label="droplet"
+                  :step="1"
+                  :min="0"
+                  :max="60">
+              </w-slider>
+              <w-slider
+                  class="mt12"
+                  v-model="durationHours"
+                  thumb-label="droplet"
+                  :step="1"
+                  :min="0"
+                  :max="24">
+              </w-slider>
+              <w-slider
+                  class="mt12"
+                  v-model="durationDays"
+                  thumb-label="droplet"
+                  :step="1"
+                  :min="0"
+                  :max="30">
+              </w-slider>
+
+            <w-checkbox
+                class="d-flex mt2"
+                v-model="dialog.fullscreen"
+                label="Fullscreen">
+            </w-checkbox>
+
+            <template #actions>
+              <div class="spacer" />
+              <w-button
+                  v-on:click="onSaveEventDuration"
+                  bg-color="error">
+                Close
+              </w-button>
+            </template>
+
+<!--            <template #actions>-->
+<!--              <div class="spacer" />-->
+<!--              <w-button v-model="onSaveEventDuration" >Закрыть</w-button>-->
+<!--            </template>-->
+
+          </w-dialog>
+
         <w-card column class="align-left bdrs4" shadow title="Укажите местоположение"
                 title-class="blue-dark3 bdrs4 title3">
         </w-card>
@@ -93,18 +171,16 @@ export default {
       formValid: null,
       // categories:[],
       categories: [
-        {
-          id: '',
-          name: ''
-        }
       ],
       categoriesKey: 'name',
       categoriesValue: 'id',
       selectCategory: {
-        id: '',
+        id: 0,
         name: ''
       },
       selectDate: new Date(),
+      dateFromDuration: '',
+      handleDate: false,
       validators: {
         required: value => !!value || 'Обязательное поле',
         requiredFile: array => array.length > 0 || 'Обязательное поле'
@@ -118,6 +194,7 @@ export default {
         "category": 0,
         "paid": false,
         "eventDate": '',
+        "eventEndDate":'',
         "participantLimit": 0,
         "location": {
           "lat": 0.0,
@@ -126,6 +203,14 @@ export default {
       },
       files:[],
       innRegexpMask: /[^0-9]/g,
+      dialog: {
+        show: false,
+        fullscreen: false,
+        width: 550,
+      },
+      durationMinutes: 0,
+      durationHours: 0,
+      durationDays: 0,
     }
   },
   created() {
@@ -148,21 +233,59 @@ export default {
 
   },
   methods: {
+    onClickEventDuration() {
+      if (this.handleDate) {
+        this.dialog.show = true
+      } else {
+        this.$waveui.notify(
+            {
+              message:'Установите дату события',
+              bgColor: "error",
+              transition: "transition-toggle",
+              shadow: true,
+              top: true,
+              timeout:3000,
+              type:'error'});
+      }
+
+    },
+    onSaveEventDuration() {
+      let date = new Date(this.selectDate);
+      let a = date.getTime();
+      a = a + this.durationMinutes * 60 * 1000;
+      a = a + this.durationHours * 60 * 60 * 1000;
+      a = a + this.durationDays * 24 * 60 * 60 * 1000
+      this.dateFromDuration = new Date(a);
+      this.dialog.show = false;
+    },
     onSaveEventClick() {
-      this.eventData.category = this.categoriesValue;
-      this.eventData.eventDate = new Date(this.selectDate);
-      let username = this.$ewmapi.getCurrentUserName();
+      if (this.selectCategory.id === 0) {
+        this.$waveui.notify(
+            {
+              message:'Выберите категорию события',
+              bgColor: "error",
+              transition: "transition-toggle",
+              shadow: true,
+              top: true,
+              timeout:3000,
+              type:'error'});
+      } else {
+        this.eventData.category = this.selectCategory;
+        this.eventData.eventDate = new Date(this.selectDate);
+        this.eventData.eventEndDate = new Date(this.dateFromDuration);
+        let username = this.$ewmapi.getCurrentUserName();
 
-      let a = this.$ewmapi.createEvent(this.eventData, username)
+        let a = this.$ewmapi.createEvent(this.eventData, username)
 
-      a.then(response => {
-        if (response.success) {
-          this.$router.push('/');
-        } else {
-          this.$waveui.notify({message:'Ошибка входа', timeout:3000, type:'error'});
-        }
-      });
-    }
+        a.then(response => {
+          if (response.success) {
+            this.$router.push('/');
+          } else {
+            this.$waveui.notify({message:'Ошибка входа', timeout:3000, type:'error'});
+          }
+        });
+      }
+      }
   }
 }
 </script>

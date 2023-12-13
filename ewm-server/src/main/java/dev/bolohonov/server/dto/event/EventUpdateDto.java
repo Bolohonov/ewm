@@ -42,6 +42,11 @@ public class EventUpdateDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime eventDate;
         /**
+         * Дата и время окончания события
+         */
+        @JsonDeserialize(using = EventDateDeserializer.class)
+        private LocalDateTime eventEndDate;
+        /**
          * Нужно ли оплачивать участие
          */
         private Boolean paid;

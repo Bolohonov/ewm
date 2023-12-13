@@ -8,15 +8,6 @@
       <w-flex class="column pa3 align-start">
         <div class="grow">
           <div class="title3 mb6 blue-dark3 size--xl">{{listTitle}}</div>
-          <w-input
-              v-model="table.keyword"
-              @click="table.activeFilter = 4"
-              :outline="table.activeFilter !== 0"
-              round
-              placeholder="Поиск по названию, аннотации и категории..."
-              inner-icon-left="wi-search"
-              class="mb3">
-          </w-input>
           <w-button
               class="mr2 mb1"
               @click="table.activeFilter = 0"
@@ -81,10 +72,6 @@ export default {
         //   itemsPerPage: 50,
         //   total: 500
         // }
-        // keywordFilter: keyword => item => {
-        //   const allTheColumns = `${item.title} ${item.annotation} ${item.categoryName}`
-        //   return new RegExp(keyword, 'i').test(allTheColumns)
-        // },
         pagination: {
           itemsPerPage: 50,
           total: 300
@@ -92,16 +79,9 @@ export default {
         filters: [
           null,
           item => item.initiatorName === this.currentUserName,
-          item => item.title === '3637356',
-          item => item.title === 'title'
-          // // keyword => item => {
-          // // console.log(keyword)
-          // //   const allTheColumns = `${item.title} ${item.annotation} ${item.categoryName}`
-          // //   return new RegExp(keyword, 'i').test(allTheColumns)
-          // }
+          item => item.title === '3637356'
         ],
-        activeFilter: 0,
-        keyword: '',
+        activeFilter: 0
       },
       componentVisibility: {
         menu: true

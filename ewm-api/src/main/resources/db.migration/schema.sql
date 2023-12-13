@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS events (
     created_on TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     description VARCHAR(4000),
     event_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    event_end_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     initiator_id BIGINT NOT NULL,
     paid BOOLEAN,
     participant_limit INT,

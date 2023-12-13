@@ -6,14 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -65,6 +58,14 @@ public class Event {
     @Column(name = "event_date")
     @JsonDeserialize(using = EventDateDeserializer.class)
     private LocalDateTime eventDate;
+
+    /**
+     * Дата и время окончания события
+     */
+    @Column(name = "event_end_date")
+    @JsonDeserialize(using = EventDateDeserializer.class)
+    private LocalDateTime eventEndDate;
+
     /**
      * Инициатор события
      */
@@ -119,8 +120,9 @@ public class Event {
     private Long rating;
 
     public Event(String title, String annotation, Long category, Long confirmedRequests,
-                 LocalDateTime createdOn, String description, LocalDateTime eventDate, Long initiatorId,
-                 Boolean paid, Integer participantLimit, LocalDateTime publishedOn, Boolean requestModeration,
+                 LocalDateTime createdOn, String description, LocalDateTime eventDate, LocalDateTime eventEndDate,
+                 Long initiatorId, Boolean paid, Integer participantLimit, LocalDateTime publishedOn,
+                 Boolean requestModeration,
                  EventState state, Long views, Double locLat, Double locLon, Long rating) {
         this.title = title;
         this.annotation = annotation;
@@ -129,6 +131,7 @@ public class Event {
         this.createdOn = createdOn;
         this.description = description;
         this.eventDate = eventDate;
+        this.eventEndDate = eventEndDate;
         this.initiatorId = initiatorId;
         this.paid = paid;
         this.participantLimit = participantLimit;

@@ -2,9 +2,7 @@ package dev.bolohonov.controllers.publicAPI.event;
 
 import dev.bolohonov.server.dto.event.EventFullDto;
 import dev.bolohonov.server.dto.event.EventShortDto;
-import dev.bolohonov.server.model.Event;
 import dev.bolohonov.server.repository.event.EventRepository;
-import dev.bolohonov.server.services.client.StatisticsClient;
 import dev.bolohonov.server.services.EventServicePublic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +42,7 @@ public class EventController {
             @RequestParam(name = "onlyAvailable", defaultValue = "false") Boolean onlyAvailable,
             @RequestParam(name = "sort", required = false) String sort,
             @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
+            @Positive @RequestParam(name = "size", defaultValue = "500") Integer size,
             HttpServletRequest request) {
 //        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
         log.debug("Запрос на получение всех событий в паблик контроллер");
@@ -59,13 +57,5 @@ public class EventController {
 //        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
         log.debug("Запрос на получение события с id %s", eventId);
         return eventService.getPublishedEventById(eventId);
-    }
-
-    @GetMapping("/all2")
-    @ResponseStatus(OK)
-    public Collection<Event> findEvents() {
-//        statisticsClient.addEndpointHit(request.getRemoteAddr(), request.getRequestURI());
-        log.debug("Запрос на получение всех событий в паблик контроллер");
-        return eventRepository.findAll();
     }
 }

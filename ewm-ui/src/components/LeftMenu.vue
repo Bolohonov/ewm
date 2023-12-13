@@ -21,6 +21,7 @@
                     {id: 0, title: 'Все события', action: this.allRequestsHandler},
                     {id: 0, title: 'Создать событие', action: this.createEventHandler},
                     {id: 0, title: 'Поиск события', action: this.searchEventHandler},
+                    {id: 0, title: 'Мой календарь', action: this.calendarHandler},
                     {id: 0, title: 'Выйти из системы', action: this.logoutHandler},
                 ]
             }
@@ -28,7 +29,7 @@
         methods: {
             myRequestHandler(e) {
                 e.preventDefault();
-                this.$router.push('/');
+                this.$router.push('/my');
             },
             allRequestsHandler(e) {
                 e.preventDefault();
@@ -57,6 +58,10 @@
                 //         }
                 //     }
                 // });
+            },
+            calendarHandler(e) {
+              e.preventDefault();
+              this.$router.push('/calendar');
             },
             logoutHandler(e) {
                 e.preventDefault();

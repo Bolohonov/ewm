@@ -7,6 +7,7 @@ import dev.bolohonov.server.model.EventState;
 import dev.bolohonov.server.dto.event.EventAddDto;
 import dev.bolohonov.server.dto.event.EventFullDto;
 import dev.bolohonov.server.repository.event.EventRepository;
+import dev.bolohonov.server.services.EventService;
 import dev.bolohonov.server.services.EventServiceAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.of;
 
@@ -31,7 +33,7 @@ import static java.util.Optional.of;
 public class EventServiceAdminImpl implements EventServiceAdmin {
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
-    private final EventServiceImpl eventService;
+    private final EventService eventService;
 
     @Transactional
     @Override
@@ -45,7 +47,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
                 getAndValidateTimeRange(rangeStart, rangeEnd),
                 from,
                 size
-        );
+        ).stream().map(eventService::updateEventState).collect(Collectors.toList());
         return eventMapper.toEventFullDto(events);
     }
 

@@ -1,21 +1,13 @@
 package dev.bolohonov.controllers.privateAPI.event;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import dev.bolohonov.server.dto.event.EventAddDto;
 import dev.bolohonov.server.dto.event.EventFullDto;
-import dev.bolohonov.server.dto.event.EventShortDto;
-import dev.bolohonov.server.dto.event.EventUpdateDto;
-import dev.bolohonov.server.dto.RequestDto;
-import dev.bolohonov.server.dto.user.UserWithRatingDto;
-import dev.bolohonov.server.model.EventDateDeserializer;
 import dev.bolohonov.server.services.EventServicePrivate;
 import dev.bolohonov.server.services.RequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.Collection;
@@ -46,6 +38,7 @@ public class EventPrivateNameController {
     @PostMapping("/add")
     @ResponseStatus(OK)
     public Optional<EventFullDto> add(@PathVariable String userName, @RequestBody EventAddDto event) {
+        log.debug("Поступил запрос на сохранение");
         return eventService.addEvent(userName, event);
     }
 
@@ -60,10 +53,16 @@ public class EventPrivateNameController {
                                                      Integer from,
                                                      @Positive @RequestParam(name = "size", defaultValue = "10")
                                                      Integer size) {
-        log.info("Поступил запрос на поиск");
+        log.debug("Поступил запрос на поиск");
         System.out.println(rangeStart);
         System.out.println(rangeEnd);
         return eventService.findEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
+//    @PostMapping("/add")
+//    @ResponseStatus(OK)
+//    public Optional<EventFullDto> add(@PathVariable String userName, @RequestBody EventAddDto event) {
+//        log.debug("Поступил запрос на сохранение");
+//        return eventService.addEvent(userName, event);
+//    }
 }

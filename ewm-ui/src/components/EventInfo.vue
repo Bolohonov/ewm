@@ -8,7 +8,7 @@
 
         <w-card column align-center justify-start class="align-center bdrs4 xs4 pa1 mt3" shadow title="Инициатор"
                 title-class="blue-dark3 bdrs4 title3">
-          {{eventData.initiator.name}}
+          {{eventData.initiatorName}}
         </w-card>
 
       <w-card column align-center justify-start class="align-center bdrs4 xs4 pa1 mt3" shadow title="Оценить"
@@ -18,7 +18,7 @@
 
       <w-card column align-center justify-start class="align-center bdrs4 xs4 pa1 mt3" shadow title="Категория"
               title-class="blue-dark3 bdrs4 title3">
-        {{eventData.category.name}}
+        {{eventData.categoryName}}
       </w-card>
 
       <w-card v-if="isEventInitiator" column align-center justify-start class="align-center bdrs4 xs4 pa1 mt3" shadow>
@@ -91,13 +91,12 @@ export default {
         'category': {
           'name':''
         },
+        'categoryName': '',
         'confirmedRequests': '',
         'participantLimit': '',
         'views': '',
         'rating': '',
-        'initiator': {
-          'name':''
-        }
+        'initiatorName': ''
       }
     }
   },
@@ -129,10 +128,6 @@ export default {
           }
         }
       });
-    },
-    onSaveEventTest () {
-      this.$ewmapi.testPost();
-
     }
   }
 }

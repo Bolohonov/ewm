@@ -9,6 +9,7 @@ import dev.bolohonov.server.dto.event.EventShortDto;
 import dev.bolohonov.server.dto.event.EventUpdateDto;
 import dev.bolohonov.server.repository.category.CategoryRepository;
 import dev.bolohonov.server.repository.feedback.FeedbackRepository;
+import dev.bolohonov.server.services.EventService;
 import dev.bolohonov.server.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ public class EventMapper {
     private final UserService userService;
     private final CategoryRepository categoryRepository;
     private final FeedbackRepository likeRepository;
+    private final EventService eventService;
 
     @Transactional
     public EventFullDto toEventFullDto(Event event) {
@@ -40,6 +42,7 @@ public class EventMapper {
                 event.getCreatedOn(),
                 event.getDescription(),
                 event.getEventDate(),
+                eventService.calculateEventDuration(event),
                 new EventFullDto.UserShortDto(event.getInitiatorId(),
                         userService.getUserById(event.getInitiatorId()).get().getName()),
                 event.getPaid(),
@@ -66,13 +69,16 @@ public class EventMapper {
                 event.getAnnotation(),
                 new EventShortDto.CategoryDto(event.getCategory(),
                         categoryRepository.findById(event.getCategory()).get().getName()),
+                categoryRepository.findById(event.getCategory()).get().getName(),
                 event.getConfirmedRequests(),
+                event.getParticipantLimit(),
                 event.getEventDate(),
-                new EventShortDto.UserShortDto(event.getInitiatorId(),
-                        userService.getUserById(event.getInitiatorId()).get().getName()),
+                eventService.calculateEventDuration(event),
+                userService.getUserById(event.getInitiatorId()).get().getName(),
                 event.getPaid(),
                 event.getViews(),
-                likeRepository.getRating(event.getId())
+                likeRepository.getRating(event.getId()),
+                event.getState()
         );
     }
 
@@ -96,6 +102,7 @@ public class EventMapper {
                 LocalDateTime.now(),
                 event.getDescription(),
                 event.getEventDate(),
+                event.getEventEndDate(),
                 userId,
                 event.getPaid(),
                 event.getParticipantLimit() != null ? event.getParticipantLimit() : 1,
@@ -121,6 +128,7 @@ public class EventMapper {
                 createdOn,
                 newEvent.getDescription() != null ? newEvent.getDescription() : oldEvent.getDescription(),
                 newEvent.getEventDate() != null ? newEvent.getEventDate() : oldEvent.getEventDate(),
+                newEvent.getEventEndDate() != null ? newEvent.getEventEndDate() : oldEvent.getEventEndDate(),
                 initiatorId,
                 newEvent.getPaid() != null ? newEvent.getPaid() : oldEvent.getPaid(),
                 newEvent.getParticipantLimit() != null ? newEvent.getParticipantLimit()
@@ -149,6 +157,7 @@ public class EventMapper {
                 createdOn,
                 newEvent.getDescription() != null ? newEvent.getDescription() : oldEvent.getDescription(),
                 newEvent.getEventDate() != null ? newEvent.getEventDate() : oldEvent.getEventDate(),
+                newEvent.getEventEndDate() != null ? newEvent.getEventEndDate() : oldEvent.getEventEndDate(),
                 initiatorId,
                 newEvent.getPaid() != null ? newEvent.getPaid() : oldEvent.getPaid(),
                 newEvent.getParticipantLimit() != null ? newEvent.getParticipantLimit()
@@ -172,6 +181,7 @@ public class EventMapper {
                 event.getCategory(),
                 event.getDescription(),
                 event.getEventDate(),
+                event.getEventEndDate(),
                 event.getPaid(),
                 event.getParticipantLimit(),
                 event.getRequestModeration(),

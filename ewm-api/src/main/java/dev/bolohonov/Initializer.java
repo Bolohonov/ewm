@@ -75,13 +75,14 @@ public class Initializer implements CommandLineRunner {
         categories = categoryService.getCategories(0, 10);
         Collection<Event> events = eventRepository.findAll();
         if (events == null || events.size() == 0) {
-            for (int i = 1; i < 11; i++) {
+            for (int i = 1; i < 100; i++) {
                 EventAddDto eventDto = new EventAddDto(
                 new StringBuilder("Title").append(i).toString(),
                 new StringBuilder("Annotation").append(i).toString(),
                 categories.stream().findAny().get().getId(),
                 new StringBuilder("Description").append(i).toString(),
                 LocalDateTime.now().plusDays(i),
+                LocalDateTime.now().plusDays(i).plusHours(i + 1),
                 false,
                 i + 1,
                 false,
@@ -92,13 +93,14 @@ public class Initializer implements CommandLineRunner {
                 eventServiceAdmin.publishEvent(eventId);
             }
 
-            for (int i = 11; i < 21; i++) {
+            for (int i = 11; i < 100; i++) {
                 EventAddDto eventDto = new EventAddDto(
                         new StringBuilder("Title").append(i).toString(),
                         new StringBuilder("Annotation").append(i).toString(),
                         categories.stream().findAny().get().getId(),
                         new StringBuilder("Description").append(i).toString(),
                         LocalDateTime.now().plusDays(i),
+                        LocalDateTime.now().plusDays(i).plusHours(i + 3),
                         true,
                         i + 1,
                         false,

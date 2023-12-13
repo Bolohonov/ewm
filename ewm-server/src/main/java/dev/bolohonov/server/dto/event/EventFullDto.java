@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Data
@@ -51,6 +52,10 @@ public class EventFullDto {
     @JsonDeserialize(using = EventDateDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
+    /**
+     * Продолжительность события
+     */
+    private Duration duration;
     /**
      * Инициатор события
      */

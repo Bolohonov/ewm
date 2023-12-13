@@ -9,6 +9,9 @@
                    :events="events"
                    :component-visibility-menu="true"
                    v-show="componentVisibility.eventList" ></EventList>
+        <MyEventList v-show="componentVisibility.eventList"
+                     list-title="События, где я инициатор или участник">
+        </MyEventList>
         <EventAddPage ref="eventAddPage" external-ref="eventAddPage" v-show="componentVisibility.eventAdd"
                       @create-event="onCreateEvent"> </EventAddPage>
       </main>
@@ -20,11 +23,12 @@
 import '@mdi/font/css/materialdesignicons.min.css'
 import EventPage from "./EventPage";
 import EventList from "./EventList";
+import MyEventList from "./MyEventList";
 import EventAddPage from "./EventAddPage"
 
 export default {
   name: "IndexPage",
-  components: {EventPage, EventList, EventAddPage},
+  components: {EventPage, EventList, EventAddPage, MyEventList},
   data() {
     return {
       components: {
@@ -34,6 +38,7 @@ export default {
       componentVisibility: {
         eventPage: false,
         eventList: true,
+        myEventList: false,
         eventAddPage: false
       },
       events: []

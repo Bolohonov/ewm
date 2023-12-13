@@ -67,7 +67,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                 getAndValidateTimeRange(rangeStart, rangeEnd),
                 from,
                 size
-        );
+        ).stream().map(eventService::updateEventState).collect(Collectors.toList());
         return eventMapper.toEventFullDto(events);
     }
 
@@ -80,7 +80,9 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Iterable<Event> eventsPage = eventRepository.findEventsByInitiatorId(userId, pageRequest);
         Collection<Event> events = new ArrayList<>();
         eventsPage.forEach(events::add);
-        return eventMapper.toEventShortDto(events);
+        return eventMapper.toEventShortDto(events.stream()
+                .map(eventService::updateEventState)
+                .collect(Collectors.toList()));
     }
 
     @Override
