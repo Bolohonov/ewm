@@ -2,6 +2,9 @@
   <w-app>
     <w-flex no-grow>
       <div class="skipper xl1"></div>
+      <w-toolbar color="blue-light6">
+        <div class="spacer"></div>
+      </w-toolbar>
     </w-flex>
     <w-flex>
       <LeftMenu v-show="componentVisibilityMenu"> </LeftMenu>
@@ -10,43 +13,17 @@
           <div class="title3 mb6 blue-dark3 size--xl">{{listTitle}}</div>
           <w-input
               v-model="table.keyword"
-              @click="table.activeFilter = 4"
-              :outline="table.activeFilter !== 0"
-              round
               placeholder="Поиск по названию, аннотации и категории..."
               inner-icon-left="wi-search"
               class="mb3">
           </w-input>
-          <w-button
-              class="mr2 mb1"
-              @click="table.activeFilter = 0"
-              round
-              :outline="table.activeFilter !== 0">
-            Без фильтра
-          </w-button>
-
-          <w-button
-              class="mr2 mb1"
-              @click="table.activeFilter = 1"
-              round
-              :outline="table.activeFilter !== 1">
-            Я - инициатор
-          </w-button>
-
-          <w-button
-              class="mr2 mb1"
-              @click="table.activeFilter = 2"
-              round
-              :outline="table.activeFilter !== 2">
-            ID >= 10
-          </w-button>
           <w-table :headers="table.headers"
                    :items="table.events"
                    fixed-headers
                    @row-select="onEventRowClick"
                    :selectable-rows=1
                    class="align-center blue-dark3"
-                   :filter="table.filters[table.activeFilter]"
+                   :filter="table.keywordFilter(table.keyword)"
                    fixed-footer
                    :pagination="table.pagination">
           </w-table>
@@ -65,7 +42,6 @@ export default {
   emits: ['createEvent'],
   data() {
     return {
-      currentUserName:'',
       table: {
         headers: [
           { label: 'Заголовок', key: 'title' },
@@ -73,7 +49,7 @@ export default {
           { label: 'Категория', key: 'categoryName' },
           { label: 'Дата события', key: 'eventDate' },
           { label: 'Статус', key: 'state' },
-          { label: 'Инициатор события', key: 'initiatorName' },
+          { label: 'Рейтинг события', key: 'rating' },
         ],
         events:[],
         // loading: false,
@@ -81,27 +57,15 @@ export default {
         //   itemsPerPage: 50,
         //   total: 500
         // }
-        // keywordFilter: keyword => item => {
-        //   const allTheColumns = `${item.title} ${item.annotation} ${item.categoryName}`
-        //   return new RegExp(keyword, 'i').test(allTheColumns)
-        // },
+        keyword: '',
+        keywordFilter: keyword => item => {
+          const allTheColumns = `${item.title} ${item.annotation} ${item.categoryName}`
+          return new RegExp(keyword, 'i').test(allTheColumns)
+        },
         pagination: {
           itemsPerPage: 50,
-          total: 300
-        },
-        filters: [
-          null,
-          item => item.initiatorName === this.currentUserName,
-          item => item.title === '3637356',
-          item => item.title === 'title'
-          // // keyword => item => {
-          // // console.log(keyword)
-          // //   const allTheColumns = `${item.title} ${item.annotation} ${item.categoryName}`
-          // //   return new RegExp(keyword, 'i').test(allTheColumns)
-          // }
-        ],
-        activeFilter: 0,
-        keyword: '',
+          total: 200
+        }
       },
       componentVisibility: {
         menu: true
@@ -113,10 +77,7 @@ export default {
       console.log('Not authorized!');
       this.$router.push('/login');
     }
-    this.currentUserName = this.$ewmapi.getCurrentUserName();
     this.uploadEvents()
-
-    console.log(this.currentUserName)
   },
   methods: {
     uploadEvents() {
@@ -136,13 +97,48 @@ export default {
         }
       });
     },
-    colorClass(state) {
-      if ( state in this.colors ) {
-        return this.colors[state];
-      } else {
-        return "";
-      }
-    },
+    // fetch ({ page, start, end, total, itemsPerPage, sorting }) {
+    //   this.table.loading = 'header'
+    //   let a = this.$ewmapi.getEventsWithPagination(start, itemsPerPage);
+    //
+    //   a.then(response => {
+    //     if (response.success) {
+    //       console.log(response);
+    //       this.table.events = response.data;
+    //     } else {
+    //       console.log(response);
+    //       if (response.status === 401) {
+    //         this.$router.push('/login');
+    //       } else {
+    //         this.$waveui.notify({message: 'Ошибка сервера', timeout: 3000, type: 'error'});
+    //       }
+    //     }
+    //   });
+    //   this.table.loading = false
+    //
+    //
+    //   if (sorting.length) {
+    //     const sortKey = sorting[0].substring(1)
+    //     this.table.events.sort((a, b) => {
+    //       if (sorting[0][0] === '+') return a[sortKey] < b[sortKey] ? -1 : 1
+    //       else return a[sortKey] > b[sortKey] ? -1 : 1
+    //     })
+    //   }
+    //   console.log(page)
+    //   console.log(start)
+    //   console.log(end)
+    //   console.log(total)
+    //   console.log(itemsPerPage)
+    //   console.log(sorting)
+    //
+    // },
+    // colorClass(state) {
+    //   if ( state in this.colors ) {
+    //     return this.colors[state];
+    //   } else {
+    //     return "";
+    //   }
+    // },
     onCreateEvent() {
     },
     onEventRowClick(item) {

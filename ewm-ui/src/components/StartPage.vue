@@ -9,7 +9,7 @@
                    :events="events"
                    :component-visibility-menu="true"
                    v-show="componentVisibility.eventList" ></EventList>
-        <MyEventList v-show="componentVisibility.eventList"
+        <MyEventList v-show="componentVisibility.myEventList"
                      list-title="События, где я инициатор или участник">
         </MyEventList>
         <EventAddPage ref="eventAddPage" external-ref="eventAddPage" v-show="componentVisibility.eventAdd"
@@ -95,6 +95,7 @@ export default {
       this.componentVisibility.eventPage = false;
       this.componentVisibility.eventList = false;
       this.componentVisibility.eventAddPage = true;
+      this.componentVisibility.myEventList = false;
 
       this.$router.push("/events/create")
 
