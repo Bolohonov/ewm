@@ -14,16 +14,16 @@
             placeholder="Выберите категории для поиска">
         </w-select>
 
-        <VueDatePicker :dark=true class="dp__theme_dark"
-                       v-model="selectDateRange"
-                       range />
+<!--        <VueDatePicker :dark=true class="dp__theme_dark"-->
+<!--                       v-model="selectDateRange"-->
+<!--                       range />-->
 
         <w-button class="xs8 pa4 mb4" v-on:click="onSendSearchRequestClick">Искать</w-button>
-        <EventList ref="eventList" external-ref="eventList"
+        <EventSearchList ref="eventList" external-ref="eventList"
                    list-title="Результаты поиска"
-                   :events="eventList"
+                   :search-result="eventList"
                    :component-visibility-menu="false"
-                   v-show="componentVisibility.eventList" ></EventList>
+                   v-show="componentVisibility.eventList" ></EventSearchList>
 
       </div>
 
@@ -35,15 +35,15 @@
 <script>
 
 import LeftMenu from "@/components/LeftMenu.vue";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import EventList from "@/components/EventList.vue";
+// import VueDatePicker from "@vuepic/vue-datepicker";
+import EventSearchList from "@/components/EventSearchList.vue";
 
 export default {
   name: 'EventAddPage',
   components: {
-    EventList,
+    EventSearchList,
     LeftMenu,
-    VueDatePicker
+    // VueDatePicker
   },
   data() {
     return {
@@ -59,11 +59,11 @@ export default {
       categoriesKey: 'name',
       categoriesValue: 'id',
       selectCategory: [],
-      selectDateRange: [],
+      // selectDateRange: [],
       eventSearchData: {
         "categories": [],
-        "startDate": '',
-        "endDate": '',
+        "startDate": null,
+        "endDate": null,
       },
       eventList: []
       }
@@ -90,8 +90,10 @@ export default {
     onSendSearchRequestClick() {
       let username = this.$ewmapi.getCurrentUserName();
       this.eventSearchData.categories = this.selectCategory;
-      this.eventSearchData.startDate = this.selectDateRange[0].toLocaleString();
-      this.eventSearchData.endDate = this.selectDateRange[1].toLocaleString();
+      // if (this.selectDateRange.length !== 0) {
+      //   this.eventSearchData.startDate = new Date(this.selectDateRange[0]);
+      //   this.eventSearchData.endDate = new Date(this.selectDateRange[1]);
+      // }
       let a = this.$ewmapi.searchEvents(this.eventSearchData, username);
 
       a.then(response => {

@@ -33,6 +33,11 @@ public class EventFullDto {
      * Категория
      */
     private CategoryDto category;
+
+    /**
+     * Категория
+     */
+    private String categoryName;
     /**
      * Количество одобренных заявок на участие в данном событии
      */

@@ -109,9 +109,13 @@ const ewmapi = {
         }
 
         const data = new URLSearchParams();
-        data.append('categories', searchData.categories);
-        data.append('rangeStart', searchData.startDate);
-        data.append('rangeEnd', searchData.endDate);
+        if (searchData.categories.length !== 0) {
+            data.append('categories', searchData.categories);
+        }
+        if (searchData.startDate !== null && searchData.endDate !== null) {
+            data.append('rangeStart', searchData.startDate);
+            data.append('rangeEnd', searchData.endDate);
+        }
 
         return new Promise(resolve => {
             const headers = {'Authorization': 'Bearer '+ localStorage.getItem("token"), 'Content-Type': 'application/json'};

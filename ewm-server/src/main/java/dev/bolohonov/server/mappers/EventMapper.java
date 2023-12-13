@@ -38,6 +38,7 @@ public class EventMapper {
                 event.getAnnotation(),
                 new EventFullDto.CategoryDto(event.getCategory(),
                         categoryRepository.findById(event.getCategory()).get().getName()),
+                categoryRepository.findById(event.getCategory()).get().getName(),
                 event.getConfirmedRequests() != null ? event.getConfirmedRequests() : null,
                 event.getCreatedOn(),
                 event.getDescription(),

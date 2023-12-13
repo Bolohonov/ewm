@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -63,8 +62,7 @@ public class EventServicePublicImpl implements EventServicePublic {
 
     private Map<String, LocalDateTime> getAndValidateTimeRangeWithDefault(String rangeStart, String rangeEnd) {
         log.debug("Получение временного интервала в eventService по умолчанию");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss",
-                Locale.getDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss");
         Map<String, LocalDateTime> timeMap = new HashMap<>();
         if (rangeStart != null) {
             LocalDateTime parsedStart = LocalDateTime.parse(rangeStart, formatter);

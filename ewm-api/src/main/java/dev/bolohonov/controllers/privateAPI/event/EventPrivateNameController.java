@@ -51,11 +51,9 @@ public class EventPrivateNameController {
                                                      @RequestParam(required = false) String rangeEnd,
                                                      @PositiveOrZero @RequestParam(name = "from", defaultValue = "0")
                                                      Integer from,
-                                                     @Positive @RequestParam(name = "size", defaultValue = "10")
+                                                     @Positive @RequestParam(name = "size", defaultValue = "500")
                                                      Integer size) {
         log.debug("Поступил запрос на поиск");
-        System.out.println(rangeStart);
-        System.out.println(rangeEnd);
         return eventService.findEvents(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 

@@ -168,7 +168,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     private Map<String, LocalDateTime> getAndValidateTimeRange(String rangeStart, String rangeEnd) {
         log.info("Получение временного интервала в eventService");
-        System.out.println(rangeStart + " " + rangeEnd);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss");
         Map<String, LocalDateTime> timeMap = new HashMap<>();
         if (rangeStart != null) {

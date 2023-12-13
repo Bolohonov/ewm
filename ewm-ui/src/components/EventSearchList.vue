@@ -18,7 +18,7 @@
               class="mb3">
           </w-input>
           <w-table :headers="table.headers"
-                   :items="table.events"
+                   :items="searchResult"
                    fixed-headers
                    @row-select="onEventRowClick"
                    :selectable-rows=1
@@ -38,7 +38,8 @@ import LeftMenu from "./LeftMenu";
 export default {
   name: "EventList",
   components: {LeftMenu},
-  props: {externalRef: String, listTitle: String, componentVisibilityMenu: Boolean},
+  props: {externalRef: String, listTitle: String, searchResult: {type: Array, required: false},
+    componentVisibilityMenu: Boolean},
   emits: ['createEvent'],
   data() {
     return {
@@ -68,7 +69,7 @@ export default {
         }
       },
       componentVisibility: {
-        menu: true
+        menu: true,
       },
     }
   },
@@ -80,7 +81,6 @@ export default {
     // if (this.props.searchResult() !== null && this.props.searchResult().length !== 0) {
     //   console.log("TEST")
     // }
-    this.uploadEvents()
   },
   methods: {
     uploadEvents() {

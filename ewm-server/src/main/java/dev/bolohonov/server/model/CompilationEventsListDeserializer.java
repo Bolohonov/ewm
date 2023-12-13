@@ -18,7 +18,6 @@ public class CompilationEventsListDeserializer extends JsonDeserializer<List<Lon
     public List<Long> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
         String str = node.asText();
-        System.out.println(str);
         return Collections.emptyList();
     }
 }
